@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft } from 'lucide-react';
+import PilotBanner from '@/components/PilotBanner';
 
 interface Brand {
   id: string;
@@ -59,7 +60,8 @@ const Brands = () => {
       </header>
 
       <div className="container py-8">
-        <h2 className="text-2xl font-bold mb-6">Available Brands</h2>
+        <PilotBanner />
+        <h2 className="text-2xl font-bold mb-6 mt-6">Available Brands</h2>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {brands.map((brand) => (

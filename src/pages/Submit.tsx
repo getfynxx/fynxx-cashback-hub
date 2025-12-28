@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
+import PilotBanner from '@/components/PilotBanner';
 import { z } from 'zod';
 
 const submitSchema = z.object({
@@ -140,7 +141,8 @@ const Submit = () => {
       </header>
 
       <div className="container py-8 max-w-lg">
-        <Card>
+        <PilotBanner />
+        <Card className="mt-6">
           <CardHeader>
             <CardTitle>Submit Content for {brand?.name}</CardTitle>
             <CardDescription>
