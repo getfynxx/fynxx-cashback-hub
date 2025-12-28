@@ -102,9 +102,9 @@ const Dashboard = () => {
       </header>
 
       <div className="container py-8">
-        <div className="mb-6 p-3 bg-primary/10 border border-primary/20 rounded-lg">
-          <p className="text-sm text-muted-foreground text-center">
-            You're part of our early pilot. Features may evolve as we learn from real usage.
+        <div className="mb-6 p-4 bg-primary/15 border border-primary/30 rounded-lg">
+          <p className="text-sm font-semibold text-primary text-center">
+            🚀 You're part of our early pilot. Features may evolve as we learn from real usage.
           </p>
         </div>
 
