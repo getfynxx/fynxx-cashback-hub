@@ -102,12 +102,6 @@ const Dashboard = () => {
       </header>
 
       <div className="container py-8">
-        <div className="mb-6 p-4 bg-primary/15 border border-primary/30 rounded-lg">
-          <p className="text-sm font-semibold text-primary text-center">
-            🚀 You're part of our early pilot. Features may evolve as we learn from real usage.
-          </p>
-        </div>
-
         <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
 
         <div className="grid gap-4 md:grid-cols-3 mb-8">
