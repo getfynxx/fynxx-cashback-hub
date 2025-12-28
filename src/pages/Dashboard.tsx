@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Wallet, Clock, CheckCircle, LogOut, ShieldCheck } from 'lucide-react';
+import PilotBanner from '@/components/PilotBanner';
 
 interface Profile {
   wallet_balance: number;
@@ -102,7 +103,8 @@ const Dashboard = () => {
       </header>
 
       <div className="container py-8">
-        <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
+        <PilotBanner />
+        <h2 className="text-2xl font-bold mb-6 mt-6">Dashboard</h2>
 
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>

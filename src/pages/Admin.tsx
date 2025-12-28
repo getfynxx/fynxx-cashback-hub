@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, ExternalLink, Check, X } from 'lucide-react';
+import PilotBanner from '@/components/PilotBanner';
 
 interface Submission {
   id: string;
@@ -156,7 +157,8 @@ const Admin = () => {
       </header>
 
       <div className="container py-8">
-        <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
+        <PilotBanner />
+        <h2 className="text-2xl font-bold mb-6 mt-6">Admin Panel</h2>
 
         {submissions.length === 0 ? (
           <Card>
