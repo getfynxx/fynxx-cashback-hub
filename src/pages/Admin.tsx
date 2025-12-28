@@ -63,6 +63,19 @@ const Admin = () => {
     setDataLoading(false);
   };
 
+  const sendNotification = async (email: string, status: 'approved' | 'rejected', brandName: string, cashbackAmount?: number) => {
+    try {
+      const { error } = await supabase.functions.invoke('send-notification', {
+        body: { email, status, brandName, cashbackAmount }
+      });
+      if (error) {
+        console.error('Failed to send notification:', error);
+      }
+    } catch (err) {
+      console.error('Error sending notification:', err);
+    }
+  };
+
   const handleApprove = async (submission: Submission) => {
     setProcessing(submission.id);
 
@@ -99,6 +112,9 @@ const Admin = () => {
         .eq('id', submission.user_id);
     }
 
+    // Send email notification
+    await sendNotification(submission.profiles.email, 'approved', submission.brands.name, cashbackAmount);
+
     toast({
       title: 'Approved',
       description: `₹${cashbackAmount} added to user wallet`,
@@ -108,13 +124,13 @@ const Admin = () => {
     setProcessing(null);
   };
 
-  const handleReject = async (submissionId: string) => {
-    setProcessing(submissionId);
+  const handleReject = async (submission: Submission) => {
+    setProcessing(submission.id);
 
     const { error } = await supabase
       .from('submissions')
       .update({ status: 'rejected' })
-      .eq('id', submissionId);
+      .eq('id', submission.id);
 
     if (error) {
       toast({
@@ -123,6 +139,9 @@ const Admin = () => {
         variant: 'destructive',
       });
     } else {
+      // Send email notification
+      await sendNotification(submission.profiles.email, 'rejected', submission.brands.name);
+
       toast({
         title: 'Rejected',
         description: 'Submission has been rejected',
@@ -218,7 +237,7 @@ const Admin = () => {
                         <Button
                           size="sm"
                           variant="destructive"
-                          onClick={() => handleReject(sub.id)}
+                          onClick={() => handleReject(sub)}
                           disabled={processing === sub.id}
                         >
                           <X className="w-4 h-4 mr-1" />
