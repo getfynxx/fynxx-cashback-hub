@@ -98,7 +98,13 @@ const Auth = () => {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6">
+    <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 gap-4">
+      <div className="w-full max-w-md p-3 bg-primary/10 border border-primary/20 rounded-lg text-center">
+        <p className="text-sm text-primary font-medium">Pilot Mode</p>
+        <p className="text-xs text-muted-foreground mt-1">
+          You're part of an early access group helping us shape FYNXX. Some features are still being refined.
+        </p>
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">
