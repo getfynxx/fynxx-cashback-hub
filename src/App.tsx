@@ -9,7 +9,6 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Brands from "./pages/Brands";
 import Submit from "./pages/Submit";
-import Withdraw from "./pages/Withdraw";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
@@ -28,7 +27,6 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/brands" element={<Brands />} />
             <Route path="/submit" element={<Submit />} />
-            <Route path="/withdraw" element={<Withdraw />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

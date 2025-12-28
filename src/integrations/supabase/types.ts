@@ -142,59 +142,6 @@ export type Database = {
           },
         ]
       }
-      withdrawals: {
-        Row: {
-          admin_note: string | null
-          amount: number
-          bank_account_number: string | null
-          bank_holder_name: string | null
-          bank_ifsc: string | null
-          created_at: string
-          id: string
-          method: string
-          status: string
-          updated_at: string
-          upi_id: string | null
-          user_id: string
-        }
-        Insert: {
-          admin_note?: string | null
-          amount: number
-          bank_account_number?: string | null
-          bank_holder_name?: string | null
-          bank_ifsc?: string | null
-          created_at?: string
-          id?: string
-          method: string
-          status?: string
-          updated_at?: string
-          upi_id?: string | null
-          user_id: string
-        }
-        Update: {
-          admin_note?: string | null
-          amount?: number
-          bank_account_number?: string | null
-          bank_holder_name?: string | null
-          bank_ifsc?: string | null
-          created_at?: string
-          id?: string
-          method?: string
-          status?: string
-          updated_at?: string
-          upi_id?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "withdrawals_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
