@@ -12,12 +12,54 @@ import PilotBanner from '@/components/PilotBanner';
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  name: z.string().optional(),
+  instagram: z.string().optional(),
+  phone: z.string().optional(),
+  confirmPassword: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.name === undefined && data.instagram === undefined && data.phone === undefined && data.confirmPassword === undefined) {
+    return; // Login mode, skip extra validation
+  }
+
+  // Signup mode validation
+  if (!data.name || data.name.length < 2) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Name is required and must be at least 2 characters",
+      path: ["name"]
+    });
+  }
+  if (!data.instagram) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Instagram ID is required",
+      path: ["instagram"]
+    });
+  }
+  if (!data.phone) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Contact number is required",
+      path: ["phone"]
+    });
+  }
+  if (data.password !== data.confirmPassword) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Passwords do not match",
+      path: ["confirmPassword"]
+    });
+  }
 });
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [phone, setPhone] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const { user, loading, signIn, signUp } = useAuth();
   const navigate = useNavigate();
@@ -37,8 +79,19 @@ const Auth = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = isLogin ? { email, password } : {
+      email,
+      password,
+      name,
+      instagram,
+      phone,
+      confirmPassword
+    };
+
+    const result = authSchema.safeParse(formData);
 
     const result = authSchema.safeParse({ email, password });
+
     if (!result.success) {
       toast({
         title: 'Validation Error',
@@ -71,7 +124,11 @@ const Auth = () => {
           navigate('/dashboard');
         }
       } else {
-        const { error } = await signUp(email, password);
+        const { error } = await signUp(email, password, {
+          full_name: name,
+          instagram_id: instagram,
+          phone_number: phone,
+        });
         if (error) {
           if (error.message.includes('already registered')) {
             toast({
@@ -123,6 +180,21 @@ const Auth = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {!isLogin && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required={!isLogin}
+                  />
+                </div>
+              </>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -134,6 +206,32 @@ const Auth = () => {
                 required
               />
             </div>
+            {!isLogin && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="instagram">Instagram ID</Label>
+                  <Input
+                    id="instagram"
+                    type="text"
+                    placeholder="@username"
+                    value={instagram}
+                    onChange={(e) => setInstagram(e.target.value)}
+                    required={!isLogin}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Contact Number</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+1234567890"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required={!isLogin}
+                  />
+                </div>
+              </>
+            )}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -145,6 +243,19 @@ const Auth = () => {
                 required
               />
             </div>
+            {!isLogin && (
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required={!isLogin}
+                />
+              </div>
+            )}
             <Button type="submit" className="w-full" disabled={submitting}>
               {submitting ? 'Please wait...' : isLogin ? 'Sign In' : 'Sign Up'}
             </Button>
