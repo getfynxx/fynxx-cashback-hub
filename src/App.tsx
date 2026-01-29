@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Brands from "./pages/Brands";
 import Submit from "./pages/Submit";
 import Admin from "./pages/Admin";
+import Verification from "./pages/Verification";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/brands" element={<Brands />} />
             <Route path="/submit" element={<Submit />} />
+            <Route path="/verification" element={<Verification />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

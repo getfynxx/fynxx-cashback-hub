@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -65,15 +65,20 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const checkAuthRef = useRef(true);
+
   useEffect(() => {
-    if (!loading && user) {
+    if (checkAuthRef.current && !loading && user) {
       navigate('/dashboard');
+      checkAuthRef.current = false;
+    }
+    if (!loading) {
+      checkAuthRef.current = false;
     }
   }, [user, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const formData = isLogin ? { email, password } : {
       email,
       password,
@@ -84,6 +89,9 @@ const Auth = () => {
     };
 
     const result = authSchema.safeParse(formData);
+
+    const result = authSchema.safeParse({ email, password });
+
     if (!result.success) {
       toast({
         title: 'Validation Error',
@@ -112,6 +120,8 @@ const Auth = () => {
               variant: 'destructive',
             });
           }
+        } else {
+          navigate('/dashboard');
         }
       } else {
         const { error } = await signUp(email, password, {
@@ -138,6 +148,7 @@ const Auth = () => {
             title: 'Account Created',
             description: 'Welcome to FYNXX!',
           });
+          navigate('/verification');
         }
       }
     } finally {
